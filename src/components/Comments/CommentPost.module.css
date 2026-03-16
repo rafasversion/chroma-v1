@@ -1,0 +1,51 @@
+.formComment {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #dbdbdb;
+  border-radius: 20px;
+  padding: 4px 8px 4px 15px;
+  box-sizing: border-box;
+}
+
+.inputWrapper:focus-within {
+  border-color: #333;
+}
+
+.commentInput {
+  flex: 1;
+  height: 32px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+.sendComment {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sendComment:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
+.sendComment i {
+  color: #fff;
+  font-size: 0.85rem;
+}

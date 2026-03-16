@@ -1,0 +1,157 @@
+.folderModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(72, 72, 72, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.folderModalContent {
+  width: 95%;
+  max-width: 800px;
+  height: auto;
+  padding: 3rem 2rem 2rem 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.closeModalFolder {
+  position: absolute;
+  display: flex;
+  background: transparent;
+  z-index: 10;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeModalFolder i {
+  color: #fff;
+}
+
+.foldersList {
+  display: flex;
+  gap: 1rem;
+}
+
+.folder {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  background: #fff;
+}
+
+.selected {
+  background: #eaeaeab6;
+  border-color: #585859;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(84, 83, 83, 0.2);
+}
+
+.folder:hover {
+  background: #fcfcfc;
+  border-color: rgba(72, 72, 72, 0.6);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.folderImg {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.content {
+  padding: 0rem 1rem 1rem 1rem;
+  border: 2px solid #eee;
+  border-top: none;
+  border-radius: 0px 0px 8px 8px;
+  font-size: 0.8rem;
+  transition: border-color 0.3s;
+}
+
+.selected .content {
+  border-color: transparent;
+}
+
+.folder img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px 8px 0px 0px;
+}
+
+.folder:hover {
+  border-color: #ddd;
+}
+
+.selected:hover {
+  border-color: #878787;
+}
+
+.privacity {
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.total {
+  color: #585859;
+}
+
+.submitPost {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.submitPost:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 767px) {
+  .submitPost {
+    margin-top: 2rem;
+  }
+  .closeModalFolder {
+    top: 10px;
+    right: 10px;
+  }
+}

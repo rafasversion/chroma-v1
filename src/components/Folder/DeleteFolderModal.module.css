@@ -1,0 +1,132 @@
+.postModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(72, 72, 72, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.postModalContent.isSelectView {
+  width: 95%;
+  max-width: 450px;
+  min-height: 300px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.selectView {
+  text-align: center;
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.selectView h2 {
+  font-size: 1.25rem;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.selectView p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #111;
+  margin-bottom: 30px;
+  margin-top: 15px;
+}
+
+.optionsContainer {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.closeModalPost {
+  position: absolute;
+  display: flex;
+  background: transparent;
+  z-index: 10;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeModalPost i {
+  color: #fff;
+}
+
+.cancelBtn {
+  background: #efefef;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+  color: #1a1a1a;
+}
+
+.cancelBtn:hover {
+  background: #e2e2e2;
+}
+
+.submitPost {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 12px;
+  padding: 12px 24px;
+  background-color: #e60023;
+  color: #fff;
+  border: 1px solid #e60023;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submitPost:hover {
+  background-color: #ad081b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.submitPost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
