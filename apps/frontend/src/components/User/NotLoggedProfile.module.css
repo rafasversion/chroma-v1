@@ -1,0 +1,415 @@
+.page {
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: -64px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 100px 8% 60px;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+.heroText {
+  flex: 1;
+  max-width: 460px;
+}
+
+.heroText h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+  color: #1a1a1a;
+}
+
+.heroText p {
+  font-size: 1.05rem;
+  color: #6e6d6d;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.heroBtns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.btnPrimary:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.btnOutline {
+  background: transparent;
+  color: #1a1a1a;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  border: 1.5px solid #1a1a1a;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.btnOutline:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.btnWhite {
+  background: #fff;
+  color: #1a1a1a;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.btnWhite:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.heroImages {
+  flex: 1;
+  position: relative;
+  height: 500px;
+}
+
+.heroImg {
+  position: absolute;
+  border-radius: 14px;
+  overflow: hidden;
+  filter: grayscale(100%);
+}
+
+.heroImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.img0 {
+  width: 155px;
+  height: 200px;
+  top: 30px;
+  left: 10px;
+  transform: rotate(-4deg);
+}
+.img1 {
+  width: 175px;
+  height: 230px;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.img2 {
+  width: 155px;
+  height: 200px;
+  top: 30px;
+  right: 10px;
+  transform: rotate(4deg);
+}
+.img3 {
+  width: 150px;
+  height: 185px;
+  bottom: 20px;
+  left: 20px;
+  transform: rotate(3deg);
+}
+.img4 {
+  width: 165px;
+  height: 205px;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 2;
+}
+.img5 {
+  width: 150px;
+  height: 185px;
+  bottom: 20px;
+  right: 20px;
+  transform: rotate(-4deg);
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 80px 8%;
+}
+
+.featureReverse {
+  flex-direction: row-reverse;
+}
+
+.featureText {
+  flex: 1;
+  max-width: 400px;
+}
+
+.featureText h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.featureText p {
+  font-size: 1rem;
+  color: #6e6d6d;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.featureImages {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.folderPreview {
+  background: #1a1a1a;
+  border-radius: 20px;
+  padding: 16px;
+  width: 260px;
+}
+
+.folderGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.folderGrid img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%);
+}
+
+.folderLabel {
+  color: #fff;
+  font-weight: 600;
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.stackImages {
+  position: relative;
+  width: 280px;
+  height: 240px;
+}
+
+.stackImgBack {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 170px;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  filter: grayscale(100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stackImgBack img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.stackImgFront {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 140px;
+  height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  filter: grayscale(100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.stackImgFront img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.colorFilterPreview {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  width: 240px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.colorDot {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.colorPreviewBar {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  background: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.colorPreviewLabel {
+  font-size: 0.85rem;
+  color: #888;
+  text-align: center;
+  margin: 0;
+}
+
+.cta {
+  text-align: center;
+  padding: 80px 8%;
+  background: #1a1a1a;
+}
+
+.cta h2 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.cta p {
+  color: #888;
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.ctaLink {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .page {
+    margin-top: -20px;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 80px 6% 40px;
+    min-height: auto;
+    text-align: center;
+  }
+
+  .heroText {
+    max-width: 100%;
+  }
+
+  .heroBtns {
+    justify-content: center;
+  }
+
+  .heroImages {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .heroImg {
+    position: relative;
+    width: 100% !important;
+    height: 130px !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    border-radius: 10px;
+  }
+
+  .img3,
+  .img4,
+  .img5 {
+    display: none;
+  }
+
+  .feature {
+    flex-direction: column !important;
+    padding: 50px 6%;
+    text-align: center;
+  }
+
+  .featureText {
+    max-width: 100%;
+  }
+
+  .folderPreview {
+    width: 200px;
+  }
+
+  .stackImages {
+    width: 200px;
+    height: 180px;
+  }
+
+  .stackImgBack {
+    width: 130px;
+    height: 160px;
+  }
+
+  .stackImgFront {
+    width: 110px;
+    height: 140px;
+  }
+}

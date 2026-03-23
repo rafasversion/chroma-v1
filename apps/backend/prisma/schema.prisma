@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model comment_likes {
+  user_id    Int
+  comment_id Int
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comment_likes_ibfk_1")
+  comments   comments @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comment_likes_ibfk_2")
+
+  @@id([user_id, comment_id])
+  @@index([comment_id], map: "comment_id")
+}
+
+model comments {
+  id             Int             @id @default(autoincrement())
+  post_id        Int
+  user_id        Int
+  content        String          @db.Text
+  created_at     DateTime?       @default(now()) @db.Timestamp(0)
+  parent_id      Int?
+  comment_likes  comment_likes[]
+  posts          posts           @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
+  users          users           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_2")
+  comments       comments?       @relation("commentsTocomments", fields: [parent_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_3")
+  other_comments comments[]      @relation("commentsTocomments")
+
+  @@index([parent_id], map: "parent_id")
+  @@index([post_id], map: "post_id")
+  @@index([user_id], map: "user_id")
+}
+
+model folder_items {
+  folder_id Int
+  post_id   Int
+  folders   folders @relation(fields: [folder_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "folder_items_ibfk_1")
+  posts     posts   @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "folder_items_ibfk_2")
+
+  @@id([folder_id, post_id])
+  @@index([post_id], map: "post_id")
+}
+
+model folders {
+  id           Int            @id @default(autoincrement())
+  user_id      Int
+  title        String         @db.VarChar(255)
+  description  String?        @db.Text
+  cover_url    String?        @db.Text
+  is_private   Boolean?       @default(false)
+  created_at   DateTime?      @default(now()) @db.Timestamp(0)
+  folder_items folder_items[]
+  users        users          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "folders_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model likes {
+  user_id Int
+  post_id Int
+  users   users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ibfk_1")
+  posts   posts @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ibfk_2")
+
+  @@id([user_id, post_id])
+  @@index([post_id], map: "post_id")
+}
+
+model notifications {
+  id                                      Int                @id @default(autoincrement())
+  user_id                                 Int
+  from_user_id                            Int
+  post_id                                 Int?
+  type                                    notifications_type
+  is_read                                 Boolean?           @default(false)
+  created_at                              DateTime?          @default(now()) @db.Timestamp(0)
+  users_notifications_user_idTousers      users              @relation("notifications_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ibfk_1")
+  users_notifications_from_user_idTousers users              @relation("notifications_from_user_idTousers", fields: [from_user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ibfk_2")
+  posts                                   posts?             @relation(fields: [post_id], references: [id], onUpdate: NoAction, map: "notifications_ibfk_3")
+
+  @@index([from_user_id], map: "from_user_id")
+  @@index([post_id], map: "post_id")
+  @@index([user_id], map: "user_id")
+}
+
+model posts {
+  id             Int             @id @default(autoincrement())
+  user_id        Int
+  title          String          @db.VarChar(255)
+  description    String?         @db.Text
+  file_url       String          @db.Text
+  is_video       Boolean?        @default(false)
+  dominant_color String?         @db.VarChar(20)
+  access_count   Int?            @default(0)
+  created_at     DateTime?       @default(now()) @db.Timestamp(0)
+  comments       comments[]
+  folder_items   folder_items[]
+  likes          likes[]
+  notifications  notifications[]
+  users          users           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "posts_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model users {
+  id                                              Int             @id @default(autoincrement())
+  username                                        String          @unique(map: "username") @db.VarChar(50)
+  email                                           String          @unique(map: "email") @db.VarChar(100)
+  password_hash                                   String          @db.VarChar(255)
+  user_picture                                    String?         @db.Text
+  is_google_user                                  Boolean?        @default(false)
+  created_at                                      DateTime?       @default(now()) @db.Timestamp(0)
+  reset_token                                     String?         @db.VarChar(255)
+  reset_token_expiry                              DateTime?
+  comment_likes                                   comment_likes[]
+  comments                                        comments[]
+  folders                                         folders[]
+  likes                                           likes[]
+  notifications_notifications_user_idTousers      notifications[] @relation("notifications_user_idTousers")
+  notifications_notifications_from_user_idTousers notifications[] @relation("notifications_from_user_idTousers")
+  posts                                           posts[]
+}
+
+enum notifications_type {
+  like
+  comment
+  reply
+  comment_like
+}

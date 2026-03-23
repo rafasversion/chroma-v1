@@ -1,0 +1,314 @@
+.container {
+  margin: 1rem auto 2rem auto;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.myMasonryGrid {
+  display: flex;
+  margin-left: -15px;
+  width: auto;
+}
+
+.myMasonryGridColumn {
+  padding-left: 15px;
+  background-clip: padding-box;
+}
+
+.photo {
+  margin-bottom: 15px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.photo:hover {
+  transform: translateY(-5px);
+}
+
+.imgWrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.photoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.photo:hover .photoOverlay {
+  opacity: 1;
+}
+
+.overlayStats {
+  display: flex;
+  gap: 20px;
+  color: white;
+  font-weight: 700;
+}
+
+.overlayStats span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+}
+
+.heartBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+}
+
+.photo:hover .heartBtn {
+  opacity: 1;
+}
+
+.photoLink {
+  text-decoration: none;
+}
+
+.photo a,
+i {
+  color: #000;
+}
+
+.photo img,
+.photo video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.photo video {
+  width: 100%;
+  aspect-ratio: auto;
+}
+
+.footer {
+  padding: 10px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.addIcon {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: transparent;
+  color: #000;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+  margin: -4px;
+}
+
+.addIcon:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #222;
+}
+
+.colorFilter {
+  display: flex;
+  align-items: center;
+  justify-self: right;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.activeColorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.colorModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.colorModalBox {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.colorModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.colorSwatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.15);
+}
+
+.colorSwatch.active {
+  border-color: #1a1a1a;
+  transform: scale(1.15);
+}
+
+.customColorBtn {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px dashed #ccc;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+}
+
+.customColorBtn:hover {
+  border-color: #888;
+}
+
+.closeModal {
+  position: absolute;
+  display: flex;
+  background: transparent;
+  z-index: 100;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.closeModal:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.closeModal i {
+  color: #fff;
+}
+
+.colorPreview {
+  width: 100%;
+  height: 60px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.colorModalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.applyBtn {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.applyBtn:hover {
+  background: #333;
+}
+
+.clearBtn {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.clearBtn:hover {
+  border-color: #1a1a1a;
+}
