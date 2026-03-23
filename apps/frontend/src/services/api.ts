@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000'; // Vite proxy handles /api → localhost:3000
+const API_BASE = 'https://darkslategrey-quetzal-544290.hostingersite.com';
 
 export const fetchApi = async <T>(url: string, options?: RequestInit): Promise<T | null> => {
   try {
