@@ -1,4 +1,4 @@
-const API_BASE = 'https://darkslategrey-quetzal-544290.hostingersite.com';
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export const fetchApi = async <T>(url: string, options?: RequestInit): Promise<T | null> => {
   try {

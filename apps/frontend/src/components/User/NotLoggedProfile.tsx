@@ -12,9 +12,7 @@ const NotLoggedProfile = () => {
             <br />
             that inspire you.
           </h1>
-          <p>
-            Save, share and organize everything you love — all in one place.
-          </p>
+          <p>Save, share and organize everything you love all in one place.</p>
           <div className={styles.heroBtns}>
             <Link to="/register" className={styles.btnPrimary}>
               Get started — it's free

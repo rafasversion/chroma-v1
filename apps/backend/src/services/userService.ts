@@ -1,3 +1,4 @@
+
 import bcrypt from 'bcryptjs';
 import { prisma } from '../utils/prisma';
 
@@ -13,7 +14,7 @@ export const getProfileService = async (user_id: number) => {
   return {
     id: user.id,
     username: user.username,
-    nome: user.username,
+    name: user.name || user.username,
     email: user.email,
     user_picture: user.user_picture,
     is_google_user: user.is_google_user,
@@ -32,7 +33,7 @@ export const getUserByUsernameService = async (username: string) => {
   return {
     id: user.id,
     username: user.username,
-    nome: user.username,
+    name: user.name || user.username,
     email: user.email,
     user_picture: user.user_picture,
   };
@@ -40,7 +41,7 @@ export const getUserByUsernameService = async (username: string) => {
 
 export const updateProfileService = async (
   user_id: number,
-  nome?: string,
+  name?: string,
   email?: string,
   password?: string,
   pictureUrl?: string
@@ -56,9 +57,9 @@ export const updateProfileService = async (
   const userData: any = {};
   const updatedFields: any = {};
 
-  if (nome && nome !== user.username) {
-    userData.username = nome;
-    updatedFields.nome = nome;
+  if (name) {
+    userData.name = name;
+    updatedFields.name = name;
   }
 
   if (email && email !== user.email) {
@@ -89,7 +90,9 @@ export const updateProfileService = async (
   }
 
   if (Object.keys(userData).length === 0) {
-    throw new Error('No data submitted for update.');
+    return {
+      message: 'Nothing to update.',
+    };
   }
 
   const updatedUser = await prisma.users.update({
@@ -98,10 +101,10 @@ export const updateProfileService = async (
   });
 
   return {
-    message: 'Usuário atualizado com sucesso.',
+    message: 'User updated successfully.',
     id: updatedUser.id,
     username: updatedUser.username,
-    nome: updatedUser.username,
+    name: updatedUser.name,
     email: updatedUser.email,
     user_picture: updatedUser.user_picture,
     updated: updatedFields,
@@ -114,7 +117,7 @@ export const getPostsByUsernameService = async (username: string, total: number,
   });
 
   if (!user) {
-    throw new Error('Usuário não encontrado.');
+    throw new Error('User not found.');
   }
 
   const posts = await prisma.posts.findMany({

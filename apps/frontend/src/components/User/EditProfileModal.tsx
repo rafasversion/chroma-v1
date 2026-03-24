@@ -4,9 +4,11 @@ import photoUserDefault from "../../assets/user.svg";
 import SubmitButton from "../Form/Button/SubmitButton";
 import Input from "../Form/Input/Input";
 
+const API_BASE = "https://darkslategrey-quetzal-544290.hostingersite.com";
+
 interface UserData {
   username?: string;
-  nome?: string;
+  name?: string;
   user_picture?: string;
   is_google_user?: boolean;
 }
@@ -22,7 +24,7 @@ export default function EditProfileModal({
   setModal,
   onUpdate,
 }: EditProfileModalProps) {
-  const [username, setUsername] = useState(user?.username || user?.nome || "");
+  const [name, setName] = useState(user?.name || "");
   const [picture, setPicture] = useState<File | null>(null);
   const [preview, setPreview] = useState(user?.user_picture || "");
   const [dragActive, setDragActive] = useState(false);
@@ -65,31 +67,31 @@ export default function EditProfileModal({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!username.trim()) {
-      setError("Please fill in the required fields.");
-      return;
-    }
     setError("");
     setLoading(true);
 
     const token = localStorage.getItem("token");
     const formData = new FormData();
-    formData.append("username", username);
+    formData.append("name", name);
     if (picture) formData.append("user_picture", picture);
 
-    const response = await fetch("/api/user", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
+    try {
+      const response = await fetch(`${API_BASE}/api/user`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-    setLoading(false);
-
-    if (response.ok) {
-      await onUpdate();
-      setModal(false);
-    } else {
+      if (response.ok) {
+        await onUpdate();
+        setModal(false);
+      } else {
+        setError("Error updating profile. Please try again.");
+      }
+    } catch {
       setError("Error updating profile. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -143,13 +145,17 @@ export default function EditProfileModal({
           </div>
 
           <Input
-            id="username"
+            id="name"
             type="text"
-            placeholder="Username"
-            value={username}
-            setValue={setUsername}
+            placeholder="Full name (optional)"
+            value={name}
+            setValue={setName}
             autoFocus
           />
+
+          <p style={{ fontSize: "0.8rem", color: "#888", marginTop: "-8px" }}>
+            @{user.username}
+          </p>
 
           {error && (
             <div style={{ color: "#d32f2f", marginTop: "10px" }}>

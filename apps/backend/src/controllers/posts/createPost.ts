@@ -3,6 +3,7 @@ import { AuthRequest } from '../../types';
 import { prisma } from '../../utils/prisma';
 import { extractDominantColor } from '../../utils/colors';
 import { createPostService } from '../../services/postService';
+const backendUrl = process.env.BACKEND_URL;
 
 export const createPost = async (req: AuthRequest, res: Response) => {
   try {
@@ -22,7 +23,7 @@ export const createPost = async (req: AuthRequest, res: Response) => {
     }
 
     const is_video = file.mimetype.startsWith('video/');
-    const file_url = `/uploads/${file.filename}`;
+    const file_url = `${backendUrl}/uploads/${file.filename}`;
 
     const result = await createPostService(
       user_id,

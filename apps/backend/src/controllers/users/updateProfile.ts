@@ -9,12 +9,12 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
     if (!user_id) {
       return res.status(401).json({ error: 'User does not have permission.' });
     }
-
-    const pictureUrl = req.file ? `/uploads/${req.file.filename}` : undefined;
+    const backendUrl = process.env.BACKEND_URL
+    const pictureUrl = req.file ? `${backendUrl}/uploads/${req.file.filename}` : undefined;
 
     const result = await updateProfileService(
       user_id,
-      req.body.nome,
+      req.body.name,
       req.body.email,
       req.body.password,
       pictureUrl

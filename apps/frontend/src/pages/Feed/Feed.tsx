@@ -11,8 +11,9 @@ import ColorFilterModal from "../../components/Feed/ColorFilterModal";
 import { useColorFilter } from "../../hooks/useColorFilter";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
 import { useAuth } from "../../hooks/useAuth";
-import { UserContext } from "../../contexts/UserContext";
+
 import NotLoggedProfile from "../../components/User/NotLoggedProfile";
+import Spinner from "../../components/Spinner";
 
 const BREAKPOINT_COLUMNS = {
   default: 7,
@@ -33,7 +34,8 @@ const Feed = () => {
   const [idPhotoSelected, setIdPhotoSelected] = React.useState<number | null>(
     null,
   );
-  const { isLogged } = React.useContext(UserContext);
+  const { isLogged, isLoading } = useAuth();
+
   const {
     pickerColor,
     selectedColor,
@@ -44,9 +46,8 @@ const Feed = () => {
     clearColor,
   } = useColorFilter();
 
-  useAuth();
-
   React.useEffect(() => {
+    if (!isLogged) return;
     async function loadPhotos() {
       if (!infinite) return;
       setLoading(true);
@@ -66,7 +67,7 @@ const Feed = () => {
       setLoading(false);
     }
     loadPhotos();
-  }, [page, infinite, selectedColor]);
+  }, [page, infinite, selectedColor, isLogged]);
 
   useInfiniteScroll({
     loading,
@@ -99,11 +100,12 @@ const Feed = () => {
     setIdPhotoSelected(photoId);
   };
 
-  if (posts.length === 0 && loading) {
-    return <p className={styles.container}>Loading feed...</p>;
-  }
+  if (isLoading) return <Spinner />;
 
   if (!isLogged) return <NotLoggedProfile />;
+
+  if (loading && posts.length === 0) return <Spinner />;
+
   return (
     <section className={styles.container}>
       {modalPost && <Post />}
@@ -141,10 +143,6 @@ const Feed = () => {
             <PostCard key={post.id} post={post} onAddClick={handleAddPhoto} />
           ))}
       </Masonry>
-
-      {posts.length === 0 && !loading && (
-        <p className={styles.container}>No posts.</p>
-      )}
     </section>
   );
 };
