@@ -10,10 +10,9 @@ import ColorFilterButton from "../../components/Feed/ColorFilterButton";
 import ColorFilterModal from "../../components/Feed/ColorFilterModal";
 import { useColorFilter } from "../../hooks/useColorFilter";
 import { useInfiniteScroll } from "../../hooks/useInfiniteScroll";
-import { useAuth } from "../../hooks/useAuth";
-
 import NotLoggedProfile from "../../components/User/NotLoggedProfile";
 import Spinner from "../../components/Spinner";
+import { UserContext } from "../../contexts/UserContext";
 
 const BREAKPOINT_COLUMNS = {
   default: 7,
@@ -34,7 +33,8 @@ const Feed = () => {
   const [idPhotoSelected, setIdPhotoSelected] = React.useState<number | null>(
     null,
   );
-  const { isLogged, isLoading } = useAuth();
+
+  const { isLogged } = React.useContext(UserContext);
 
   const {
     pickerColor,
@@ -45,6 +45,19 @@ const Feed = () => {
     applyColor,
     clearColor,
   } = useColorFilter();
+
+  React.useEffect(() => {
+    const refresh = () => {
+      setPosts([]);
+      setInfinite(false);
+      setTimeout(() => {
+        setPage(1);
+        setInfinite(true);
+      }, 0);
+    };
+    window.addEventListener("refreshFeed", refresh);
+    return () => window.removeEventListener("refreshFeed", refresh);
+  }, []);
 
   React.useEffect(() => {
     if (!isLogged) return;
@@ -100,10 +113,7 @@ const Feed = () => {
     setIdPhotoSelected(photoId);
   };
 
-  if (isLoading) return <Spinner />;
-
   if (!isLogged) return <NotLoggedProfile />;
-
   if (loading && posts.length === 0) return <Spinner />;
 
   return (

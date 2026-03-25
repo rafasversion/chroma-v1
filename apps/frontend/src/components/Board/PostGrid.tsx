@@ -44,19 +44,19 @@ const PhotoGrid = ({
         if (!item.file_url) return null;
         return (
           <div key={item.id} className={styles.photoCard}>
-            <Link to={`/post/${item.id}`} className={styles.photoLink}>
-              <div className={styles.imgWrapper}>
-                <button
-                  type="button"
-                  className={styles.heartBtn}
-                  onClick={(e) => onLike(e, item.id, !!item.user_liked)}
-                >
-                  <Heart
-                    size={20}
-                    fill={item.user_liked ? "red" : "none"}
-                    stroke={item.user_liked ? "red" : "white"}
-                  />
-                </button>
+            <div className={styles.imgWrapper}>
+              <button
+                type="button"
+                className={styles.heartBtn}
+                onClick={(e) => onLike(e, item.id, !!item.user_liked)}
+              >
+                <Heart
+                  size={20}
+                  fill={item.user_liked ? "red" : "none"}
+                  stroke={item.user_liked ? "red" : "white"}
+                />
+              </button>
+              <Link to={`/post/${item.id}`} className={styles.photoLink}>
                 {item.is_video ? (
                   <video src={item.file_url} muted loop playsInline />
                 ) : (
@@ -75,16 +75,14 @@ const PhotoGrid = ({
                     </span>
                   </div>
                 </div>
-              </div>
-              {isOwnProfile && activeTab === "posts" && (
-                <>
-                  <PostOptions
-                    onEdit={() => onEditPhoto(item)}
-                    onDelete={() => onDeletePhoto(item)}
-                  />
-                </>
-              )}
-            </Link>
+              </Link>
+            </div>
+            {isOwnProfile && activeTab === "posts" && (
+              <PostOptions
+                onEdit={() => onEditPhoto(item)}
+                onDelete={() => onDeletePhoto(item)}
+              />
+            )}
           </div>
         );
       })}

@@ -6,12 +6,13 @@ import SubmitButton from "../Form/Button/SubmitButton";
 import Input from "../Form/Input/Input";
 import TextArea from "../Form/Input/TextArea";
 
-interface PhotoFormProps {
+interface PostFormProps {
   handleBack: () => void;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  onUpdate: () => Promise<void>;
 }
 
-const PhotoForm = ({ handleBack, setModal }: PhotoFormProps) => {
+const PostForm = ({ handleBack, setModal, onUpdate }: PostFormProps) => {
   const [file, setFile] = React.useState<{
     preview: string;
     raw: File;
@@ -98,8 +99,8 @@ const PhotoForm = ({ handleBack, setModal }: PhotoFormProps) => {
       );
 
       if (response) {
+        await onUpdate();
         setModal(false);
-        window.location.reload();
       }
     } catch (err) {
       console.error("Erro ao postar", err);
@@ -204,4 +205,4 @@ const PhotoForm = ({ handleBack, setModal }: PhotoFormProps) => {
   );
 };
 
-export default PhotoForm;
+export default PostForm;

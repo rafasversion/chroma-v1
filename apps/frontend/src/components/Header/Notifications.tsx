@@ -75,7 +75,7 @@ const Notifications = ({
             notifications.map((n) => (
               <NavLink
                 key={n.id}
-                to={n.post_id ? `/photo/${n.post_id}` : "#"}
+                to={n.post_id ? `/post/${n.post_id}` : "#"}
                 className={`${styles.notifItem} ${!n.is_read ? styles.notifUnread : ""}`}
                 onClick={() => setNotifOpen(false)}
               >

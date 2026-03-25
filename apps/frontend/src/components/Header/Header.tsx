@@ -18,7 +18,7 @@ import {
 import type { NotificationAPI } from "../../types/notificationApi";
 
 const Header = () => {
-  const { isLogged, logoutAction } = React.useContext(UserContext);
+  const { isLogged, logoutAction, username } = React.useContext(UserContext);
   const [modalPost, setModalPost] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [notifications, setNotifications] = React.useState<NotificationAPI[]>(
@@ -80,6 +80,7 @@ const Header = () => {
                 isLogged={isLogged}
                 scrolled={scrolled}
                 onOpenPost={() => setModalPost(true)}
+                username={username}
               />
 
               {isLogged && (
@@ -113,13 +114,28 @@ const Header = () => {
           isLogged={isLogged}
           logoutAction={logoutAction}
           onOpenPost={() => setModalPost(true)}
+          username={username}
           notifications={notifications}
           unread={unread}
           markAsRead={markAsRead}
         />
       )}
 
-      {modalPost && <CreateContentModal setModal={setModalPost} />}
+      {modalPost && (
+        <CreateContentModal
+          setModal={setModalPost}
+          onUpdate={async (type?: "post" | "folder") => {
+            const path = window.location.pathname;
+            if (type === "folder" && !path.startsWith("/board")) {
+              window.location.href = `/board/${username}/folders`;
+            } else if (path === "/") {
+              window.dispatchEvent(new CustomEvent("refreshFeed"));
+            } else if (path.startsWith("/board")) {
+              window.dispatchEvent(new CustomEvent("refreshBoard"));
+            }
+          }}
+        />
+      )}
     </>
   );
 };

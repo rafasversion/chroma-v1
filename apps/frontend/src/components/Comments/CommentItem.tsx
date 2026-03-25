@@ -5,6 +5,7 @@ import { deleteCommentService } from "../../services/commentService";
 import CommentPost from "./CommentPost";
 import type { PostCommentAPI } from "../../types/postCommentApi";
 import userDefault from "../../assets/user.svg";
+import { Link } from "react-router-dom";
 
 interface CommentItemProps {
   comment: PostCommentAPI;
@@ -57,20 +58,22 @@ const CommentItem = ({
           alignItems: "flex-start",
         }}
       >
-        <img
-          src={comment.user_picture || userDefault}
-          alt={comment.comment_author}
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: "50%",
-            objectFit: "cover",
-            flexShrink: 0,
-          }}
-          onError={(e) => {
-            e.currentTarget.src = userDefault;
-          }}
-        />
+        <Link to={`/board/${comment.comment_author}/folders`}>
+          <img
+            src={comment.user_picture || userDefault}
+            alt={comment.comment_author}
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              objectFit: "cover",
+              flexShrink: 0,
+            }}
+            onError={(e) => {
+              e.currentTarget.src = userDefault;
+            }}
+          />
+        </Link>
         <div style={{ flex: 1 }}>
           <div
             style={{

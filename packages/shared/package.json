@@ -1,6 +1,0 @@
-{
-  "name": "@chroma/shared",
-  "version": "2.0.0",
-  "type": "module",
-  "main": "./dist/index.js"
-}

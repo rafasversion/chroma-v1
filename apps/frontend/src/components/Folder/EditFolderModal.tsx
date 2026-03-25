@@ -9,7 +9,7 @@ import TextArea from "../Form/Input/TextArea";
 interface EditFolderModalProps {
   folder: FolderAPI;
   onClose: () => void;
-  onUpdate: () => void;
+  onUpdate: () => Promise<void> | void;
 }
 
 const EditFolderModal = ({
@@ -69,7 +69,7 @@ const EditFolderModal = ({
 
     try {
       await updateFolderService(folder.id, formData);
-      onUpdate();
+      await onUpdate();
       onClose();
     } catch (err) {
       console.error(err);

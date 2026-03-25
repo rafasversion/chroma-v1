@@ -63,7 +63,7 @@ export const searchService = async (query: string) => {
   const usersResult = users.map((user: any) => ({
     id: user.id,
     username: user.username,
-    nome: user.username,
+    name: user.name,
     picture: user.user_picture,
   }));
 

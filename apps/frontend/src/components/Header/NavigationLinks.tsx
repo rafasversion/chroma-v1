@@ -7,12 +7,14 @@ interface NavigationLinksProps {
   isLogged: boolean;
   scrolled?: boolean;
   onOpenPost: () => void;
+  username: string;
 }
 
 const NavigationLinks = ({
   isLogged,
   scrolled = false,
   onOpenPost,
+  username,
 }: NavigationLinksProps) => {
   return (
     <>
@@ -23,16 +25,14 @@ const NavigationLinks = ({
       >
         <Home size={scrolled ? 22 : 24} strokeWidth={2} />
       </NavLink>
-
       {isLogged && (
         <>
           <NavLink
             className={`${styles.link} ${scrolled ? styles.linkScrolled : ""}`}
-            to="/board"
+            to={`/board/${username}/folders`}
           >
             <LayoutGrid size={scrolled ? 22 : 24} strokeWidth={2} />
           </NavLink>
-
           <button
             className={`${styles.link} ${scrolled ? styles.linkScrolled : ""}`}
             onClick={onOpenPost}

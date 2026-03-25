@@ -2,6 +2,9 @@ import React from "react";
 import styles from "../CreateContent/CreateContentModal.module.css";
 import { updatePostService } from "../../services/updatePostService";
 import type { PostAPI } from "../../types/postApi";
+import Input from "../Form/Input/Input";
+import TextArea from "../Form/Input/TextArea";
+import SubmitButton from "../Form/Button/SubmitButton";
 
 interface EditPhotoModalProps {
   post: PostAPI;
@@ -22,7 +25,7 @@ const EditPostModal = ({ post, onClose, onUpdate }: EditPhotoModalProps) => {
 
     try {
       await updatePostService(post.id, { title, description });
-      onUpdate();
+      await onUpdate();
       onClose();
     } catch (err) {
       console.error(err);
@@ -34,7 +37,7 @@ const EditPostModal = ({ post, onClose, onUpdate }: EditPhotoModalProps) => {
 
   return (
     <section className={styles.postModal}>
-      <div className={styles.postModalContent}>
+      <div className={styles.postModalContent} style={{ maxWidth: "500px" }}>
         <button className={styles.closeModal} onClick={onClose}>
           <i className="fa-solid fa-xmark" />
         </button>
@@ -44,46 +47,40 @@ const EditPostModal = ({ post, onClose, onUpdate }: EditPhotoModalProps) => {
           >
             Edit Post
           </h2>
-          <div className={styles.photoFormContent}>
-            <div className={styles.fieldsColumn}>
-              <div className={styles.inputGroup}>
-                <label style={{ fontWeight: 600, fontSize: "0.9rem" }}>
-                  Title
-                </label>
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={title}
-                  onChange={({ target }) => setTitle(target.value)}
-                />
-              </div>
-              <div className={styles.inputGroup}>
-                <label style={{ fontWeight: 600, fontSize: "0.9rem" }}>
-                  Description
-                </label>
-                <textarea
-                  className={styles.input}
-                  rows={5}
-                  style={{ resize: "none" }}
-                  value={description}
-                  onChange={({ target }) => setDescription(target.value)}
-                />
-              </div>
-            </div>
+
+          <div className={styles.fieldsColumn}>
+            <Input
+              id="title"
+              label="Title"
+              type="text"
+              value={title}
+              setValue={setTitle}
+            />
+            <TextArea
+              id="description"
+              label="Description"
+              rows={5}
+              style={{ resize: "none" }}
+              value={description}
+              setValue={setDescription}
+            />
           </div>
+
           {error && (
             <p style={{ color: "red", fontSize: "0.8rem", marginTop: "10px" }}>
               {error}
             </p>
           )}
-          <div className={styles.folderFooter}>
-            <button
-              className={styles.submitPost}
+
+          <div
+            className={styles.folderFooter}
+            style={{ justifyContent: "flex-end" }}
+          >
+            <SubmitButton
               type="submit"
               disabled={loading}
-            >
-              {loading ? "Updating..." : "Update"}
-            </button>
+              text={loading ? "Updating..." : "Update"}
+            />
           </div>
         </form>
       </div>

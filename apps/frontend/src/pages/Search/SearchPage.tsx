@@ -2,6 +2,7 @@ import React from "react";
 import { useSearchParams, NavLink } from "react-router-dom";
 import { User, ImageIcon } from "lucide-react";
 import styles from "./SearchPage.module.css";
+import { searchService } from "../../services/searchService";
 
 interface PostResult {
   id: number;
@@ -14,14 +15,13 @@ interface PostResult {
 interface UserResult {
   id: number;
   username: string;
-  nome: string;
+  name: string;
   picture: string | null;
 }
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const q = searchParams.get("q") || "";
-
   const [posts, setPosts] = React.useState<PostResult[]>([]);
   const [users, setUsers] = React.useState<UserResult[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -29,17 +29,19 @@ const SearchPage = () => {
 
   React.useEffect(() => {
     if (!q || q.length < 2) return;
-
     setLoading(true);
     setError("");
 
-    fetch(`/api/search?q=${encodeURIComponent(q)}`)
-      .then((res) => res.json())
+    searchService(q)
       .then((data) => {
-        setPosts(data.posts || []);
-        setUsers(data.users || []);
+        if (data) {
+          setPosts(data.posts || []);
+          setUsers(data.users || []);
+        } else {
+          setError("Error retrieving results.");
+        }
       })
-      .catch(() => setError("Erro ao buscar resultados."))
+      .catch(() => setError("Error retrieving results."))
       .finally(() => setLoading(false));
   }, [q]);
 
@@ -78,7 +80,7 @@ const SearchPage = () => {
                   </div>
                 )}
                 <div>
-                  <p className={styles.userName}>{user.nome}</p>
+                  <p className={styles.userName}>{user.name}</p>
                   <p className={styles.userUsername}>@{user.username}</p>
                 </div>
               </NavLink>

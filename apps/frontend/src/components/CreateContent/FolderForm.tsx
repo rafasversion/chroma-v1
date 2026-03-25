@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./CreateContentModal.module.css";
 import { createFolderService } from "../../services/folderService";
+import { Upload } from "lucide-react";
 import SubmitButton from "../Form/Button/SubmitButton";
 import Input from "../Form/Input/Input";
 import TextArea from "../Form/Input/TextArea";
@@ -8,60 +9,93 @@ import TextArea from "../Form/Input/TextArea";
 interface FolderFormProps {
   handleBack: () => void;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
+  onUpdate: () => Promise<void>;
 }
 
-const FolderForm = ({ handleBack, setModal }: FolderFormProps) => {
-  const [folderImage, setFolderImage] = React.useState<{
+const FolderForm = ({ handleBack, setModal, onUpdate }: FolderFormProps) => {
+  const [file, setFile] = React.useState<{
     preview: string;
     raw: File;
+    type: string;
   } | null>(null);
-  const [titleFolder, setTitleFolder] = React.useState("");
+
+  const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [isPrivate, setIsPrivate] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [dragActive, setDragActive] = React.useState(false);
-  const [isPrivate, setIsPrivate] = React.useState(false);
 
-  const processFolderImage = (selectedFile: File) => {
-    if (selectedFile.type.startsWith("image/")) {
-      setFolderImage({
+  const processFile = (selectedFile: File) => {
+    if (
+      selectedFile.type.startsWith("image/") ||
+      selectedFile.type.startsWith("video/")
+    ) {
+      setFile({
         preview: URL.createObjectURL(selectedFile),
         raw: selectedFile,
+        type: selectedFile.type,
       });
       setError("");
     } else {
-      setError("Select a valid image.");
+      setError("Please select an image or video.");
+    }
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDragActive(false);
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      processFile(event.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileChange = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    if (target.files && target.files[0]) {
+      processFile(target.files[0]);
     }
   };
 
   const handleDrag = (event: React.DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    if (event.type === "dragenter" || event.type === "dragover")
+    if (event.type === "dragenter" || event.type === "dragover") {
       setDragActive(true);
-    else if (event.type === "dragleave") setDragActive(false);
+    } else if (event.type === "dragleave") {
+      setDragActive(false);
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!titleFolder) return setError("Give your folder a name.");
     setError("");
-    setLoading(true);
 
+    if (!file || !title || !description)
+      return setError("Please fill in all the information..");
+    if (title.length > 10)
+      return setError("Title can have a maximum of 10 characters.");
+    if (description.length > 600)
+      return setError("Description can have a maximum of 600 characters.");
+
+    setLoading(true);
     const formData = new FormData();
-    formData.append("title", titleFolder);
+    formData.append("cover", file.raw);
+    formData.append("title", title);
     formData.append("description", description);
-    formData.append("is_private", isPrivate ? "1" : "0");
-    if (folderImage) formData.append("cover", folderImage.raw);
+    formData.append("isPrivate", String(isPrivate));
 
     try {
       const response = await createFolderService(formData);
+
       if (response) {
+        await onUpdate();
         setModal(false);
-        window.location.reload();
       }
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao postar", err);
       setError(
         "An internal error occurred. Please wait a moment and try again.",
       );
@@ -71,96 +105,107 @@ const FolderForm = ({ handleBack, setModal }: FolderFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <button type="button" onClick={handleBack} className={styles.backBtn}>
-        <i className="fa-solid fa-arrow-left" />
+    <>
+      <button onClick={handleBack} className={styles.backBtn}>
+        <i className="fa-solid fa-arrow-left"></i>
       </button>
 
-      <h2 style={{ color: "#000", marginBottom: "24px", fontSize: "1.5rem" }}>
-        Create a Folder
-      </h2>
-
-      <div className={styles.folderFormContent}>
+      <form className={styles.formModal} onSubmit={handleSubmit}>
         <div
-          className={`${styles.folderPhotoPlaceholder} ${dragActive ? styles.dragActive : ""}`}
+          className={`${styles.imageSection} ${dragActive ? styles.dragActive : ""}`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
-          onDrop={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setDragActive(false);
-            if (e.dataTransfer.files?.[0])
-              processFolderImage(e.dataTransfer.files[0]);
-          }}
+          onDrop={handleDrop}
         >
-          <label
-            htmlFor="folderImage"
-            style={{ width: "100%", height: "100%", cursor: "pointer" }}
-          >
-            {folderImage ? (
-              <img src={folderImage.preview} alt="Preview" />
-            ) : (
-              <i className="fa-solid fa-folder" />
-            )}
-            <div className={styles.uploadOverlay}>
-              <i className="fa-solid fa-cloud-arrow-up" />
-              <span>Add Cover</span>
+          {!file && (
+            <label htmlFor="postPhoto" className={styles.fileLabel}>
+              <Upload size={28} />
+              <span>
+                Drag & drop or <u>browse</u>
+              </span>
+              <small>Images and videos supported</small>
+            </label>
+          )}
+
+          {file && (
+            <div className={styles.previewContainer}>
+              <button
+                type="button"
+                onClick={() => setFile(null)}
+                className={styles.removeBtn}
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+              {file.type.startsWith("video/") ? (
+                <video
+                  src={file.preview}
+                  className={styles.previewImg}
+                  controls
+                />
+              ) : (
+                <img
+                  src={file.preview}
+                  alt="Preview"
+                  className={styles.previewImg}
+                />
+              )}
             </div>
-          </label>
-          <input
-            type="file"
-            id="folderImage"
-            className={styles.fileInput}
-            onChange={({ target }) =>
-              target.files?.[0] && processFolderImage(target.files[0])
-            }
-            accept="image/*"
-          />
+          )}
         </div>
 
-        <div className={styles.fieldsColumn}>
+        <div className={styles.fieldsSection}>
           <Input
-            id="folderTitle"
+            id="title"
+            label="Title"
+            value={title}
+            setValue={setTitle}
             type="text"
-            placeholder="Folder name"
-            value={titleFolder}
-            setValue={setTitleFolder}
-            autoFocus
           />
+
           <TextArea
-            id="description"
-            placeholder="Add an optional description"
-            rows={5}
-            style={{ resize: "none" }}
+            id="descricao"
+            label="Description"
+            rows={4}
             value={description}
             setValue={setDescription}
           />
-        </div>
-      </div>
 
-      {error && (
-        <div style={{ color: "#d32f2f", marginBottom: "16px" }}>
-          <i className="fa-solid fa-circle-exclamation" /> {error}
-        </div>
-      )}
+          <button
+            type="button"
+            className={`${styles.privateBtn} ${isPrivate ? styles.active : ""}`}
+            onClick={() => setIsPrivate(!isPrivate)}
+          >
+            <i
+              className={`fa-solid ${isPrivate ? "fa-lock" : "fa-lock-open"}`}
+            ></i>
+            {isPrivate ? "Private" : "Public"}
+          </button>
 
-      <div className={styles.folderFooter}>
-        <button
-          type="button"
-          className={`${styles.privateBtn} ${isPrivate ? styles.active : ""}`}
-          onClick={() => setIsPrivate(!isPrivate)}
-        >
-          <i className={`fa-solid ${isPrivate ? "fa-lock" : "fa-lock-open"}`} />
-          {isPrivate ? "Private" : "Public"}
-        </button>
-        <SubmitButton
-          type="submit"
-          disabled={loading}
-          text={loading ? "Submitting..." : "Submit"}
+          {error && (
+            <div>
+              <span>
+                <i className="fa-solid fa-circle-exclamation"></i> {error}
+              </span>
+            </div>
+          )}
+
+          <SubmitButton
+            type="submit"
+            disabled={loading}
+            text={loading ? "Submitting..." : "Submit"}
+          />
+        </div>
+
+        <input
+          type="file"
+          id="postPhoto"
+          className={styles.fileInput}
+          onChange={handleFileChange}
+          accept="image/*,video/*"
         />
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 

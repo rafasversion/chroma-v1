@@ -14,7 +14,7 @@ export const getProfileService = async (user_id: number) => {
   return {
     id: user.id,
     username: user.username,
-    name: user.name || user.username,
+    name: user.name,
     email: user.email,
     user_picture: user.user_picture,
     is_google_user: user.is_google_user,
@@ -33,7 +33,7 @@ export const getUserByUsernameService = async (username: string) => {
   return {
     id: user.id,
     username: user.username,
-    name: user.name || user.username,
+    name: user.name,
     email: user.email,
     user_picture: user.user_picture,
   };

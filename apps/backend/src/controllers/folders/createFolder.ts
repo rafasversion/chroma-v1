@@ -12,7 +12,12 @@ export const createFolder = async (req: AuthRequest, res: Response) => {
 
     const description = req.body.description;
     const is_private = req.body.is_private === '1' || req.body.is_private === 'true' || req.body.is_private === true;
-    const cover_url = req.file ? `/uploads/${req.file.filename}` : undefined;
+
+    const backendUrl = process.env.BACKEND_URL;
+
+    const cover_url = req.file
+      ? `${backendUrl}/uploads/${req.file.filename}`
+      : undefined;
 
     const result = await createFolderService(user_id, title, description, is_private, cover_url);
     return res.status(201).json(result);

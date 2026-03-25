@@ -19,6 +19,13 @@ const SavePhotoFolder = ({ setModal, photoId }: FolderModalProps) => {
   const [fetching, setFetching] = React.useState(true);
 
   React.useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  React.useEffect(() => {
     const loadFolders = async () => {
       setFetching(true);
       const response = await folderService<FolderAPI[]>();
@@ -94,7 +101,7 @@ const SavePhotoFolder = ({ setModal, photoId }: FolderModalProps) => {
             </Link>
           </div>
         ) : (
-          <form onSubmit={handleSave}>
+          <form className={styles.form} onSubmit={handleSave}>
             <div className={styles.foldersList}>
               {folders.map((folder) => {
                 const isSelected = selectedFolders.includes(folder.id);
@@ -127,11 +134,13 @@ const SavePhotoFolder = ({ setModal, photoId }: FolderModalProps) => {
                 );
               })}
             </div>
-            <SubmitButton
-              type="submit"
-              text={loading ? "Saving..." : "Save"}
-              disabled={loading || selectedFolders.length === 0}
-            />
+            <div className={styles.submitWrapper}>
+              <SubmitButton
+                type="submit"
+                text={loading ? "Saving..." : "Save"}
+                disabled={loading || selectedFolders.length === 0}
+              />
+            </div>
           </form>
         )}
       </div>

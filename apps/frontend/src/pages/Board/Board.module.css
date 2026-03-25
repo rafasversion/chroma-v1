@@ -417,6 +417,9 @@
     gap: 0;
     justify-content: space-around;
   }
+  .photoCard .heartBtn {
+    opacity: 1;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 767px) {
@@ -428,5 +431,8 @@
 
   .folder {
     width: 100%;
+  }
+  .photoCard .heartBtn {
+    opacity: 1;
   }
 }

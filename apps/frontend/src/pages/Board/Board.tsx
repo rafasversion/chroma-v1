@@ -61,6 +61,12 @@ const Board = () => {
     setFoldersState(folders);
   }, [folders]);
 
+  React.useEffect(() => {
+    const refresh = () => refreshFolders();
+    window.addEventListener("refreshBoard", refresh);
+    return () => window.removeEventListener("refreshBoard", refresh);
+  }, [refreshFolders]);
+
   const { handleLike, confirmDeleteFolder, confirmDeletePhoto, isDeleting } =
     useBoardActions(
       setPostsState,

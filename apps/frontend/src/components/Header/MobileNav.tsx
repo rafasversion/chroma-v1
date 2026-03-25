@@ -13,6 +13,7 @@ interface MobileNavProps {
   notifications: NotificationAPI[];
   unread: number;
   markAsRead: () => void;
+  username: string;
 }
 
 const MobileNav = ({
@@ -22,6 +23,7 @@ const MobileNav = ({
   notifications,
   unread,
   markAsRead,
+  username,
 }: MobileNavProps) => {
   return (
     <nav className={styles.mobileNav}>
@@ -37,7 +39,7 @@ const MobileNav = ({
 
       {isLogged && (
         <NavLink
-          to="/board"
+          to={`/board/${username}/folders`}
           className={({ isActive }) =>
             `${styles.mobileNavBtn} ${isActive ? styles.active : ""}`
           }

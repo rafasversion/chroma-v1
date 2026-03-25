@@ -70,8 +70,14 @@
 
 @media (max-width: 767px) {
   .dropdownMenu {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
     right: auto;
-    left: 0;
-    top: -10px;
+    width: 200px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
   }
 }

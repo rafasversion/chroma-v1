@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Post.module.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { postService } from "../../services/postService";
 import { likeService } from "../../services/likeService";
 import { commentService } from "../../services/commentService";
@@ -119,8 +119,12 @@ const Post = () => {
   }
 
   const focusInputComment = () => {
-    setCommentsOpen(true);
-    setTimeout(() => inputCommentRef.current?.focus(), 300);
+    if (window.innerWidth >= 768) {
+      setTimeout(() => inputCommentRef.current?.focus(), 100);
+    } else {
+      setCommentsOpen(true);
+      setTimeout(() => inputCommentRef.current?.focus(), 300);
+    }
   };
 
   if (loading)
@@ -178,23 +182,24 @@ const Post = () => {
         </div>
 
         <div className={styles.details}>
-          {/* DESKTOP CONTENT */}
           <div className={styles.content}>
             <div className={styles.header}>
-              <img
-                src={post.author_picture || userDefault}
-                alt={post.author}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  flexShrink: 0,
-                }}
-                onError={(e) => {
-                  e.currentTarget.src = userDefault;
-                }}
-              />
+              <Link to={`/board/${post.author}/folders`}>
+                <img
+                  src={post.author_picture || userDefault}
+                  alt={post.author}
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    flexShrink: 0,
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.src = userDefault;
+                  }}
+                />
+              </Link>
               <h1 className={styles.title}>
                 {post.author} • {post.title}
               </h1>
@@ -269,20 +274,22 @@ const Post = () => {
               <div
                 style={{ display: "flex", alignItems: "flex-start", gap: 8 }}
               >
-                <img
-                  src={post.author_picture || userDefault}
-                  alt={post.author}
-                  style={{
-                    width: 26,
-                    height: 26,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    flexShrink: 0,
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.src = userDefault;
-                  }}
-                />
+                <Link to={`/board/${post.author}/folders`}>
+                  <img
+                    src={post.author_picture || userDefault}
+                    alt={post.author}
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      flexShrink: 0,
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.src = userDefault;
+                    }}
+                  />
+                </Link>
                 <span
                   style={{
                     fontWeight: 600,
