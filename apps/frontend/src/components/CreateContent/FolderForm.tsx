@@ -111,66 +111,70 @@ const FolderForm = ({ handleBack, setModal, onUpdate }: FolderFormProps) => {
       </button>
 
       <form className={styles.formModal} onSubmit={handleSubmit}>
-        <div
-          className={`${styles.imageSection} ${dragActive ? styles.dragActive : ""}`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          {!file && (
-            <label htmlFor="postPhoto" className={styles.fileLabel}>
-              <Upload size={28} />
-              <span>
-                Drag & drop or <u>browse</u>
-              </span>
-              <small>Images and videos supported</small>
-            </label>
-          )}
+        <div className={styles.formBody}>
+          <div
+            className={`${styles.imageSection} ${dragActive ? styles.dragActive : ""}`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            {!file && (
+              <label htmlFor="postPhoto" className={styles.fileLabel}>
+                <Upload size={28} />
+                <span>
+                  Drag & drop or <u>browse</u>
+                </span>
+                <small>Cover folder</small>
+              </label>
+            )}
 
-          {file && (
-            <div className={styles.previewContainer}>
-              <button
-                type="button"
-                onClick={() => setFile(null)}
-                className={styles.removeBtn}
-              >
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-              {file.type.startsWith("video/") ? (
-                <video
-                  src={file.preview}
-                  className={styles.previewImg}
-                  controls
-                />
-              ) : (
-                <img
-                  src={file.preview}
-                  alt="Preview"
-                  className={styles.previewImg}
-                />
-              )}
-            </div>
-          )}
+            {file && (
+              <div className={styles.previewContainer}>
+                <button
+                  type="button"
+                  onClick={() => setFile(null)}
+                  className={styles.removeBtn}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+                {file.type.startsWith("video/") ? (
+                  <video
+                    src={file.preview}
+                    className={styles.previewImg}
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={file.preview}
+                    alt="Preview"
+                    className={styles.previewImg}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className={styles.fieldsSection}>
+            <Input
+              id="title"
+              label="Title"
+              value={title}
+              setValue={setTitle}
+              type="text"
+            />
+
+            <TextArea
+              id="descricao"
+              label="Description"
+              rows={4}
+              value={description}
+              setValue={setDescription}
+            />
+          </div>
         </div>
 
-        <div className={styles.fieldsSection}>
-          <Input
-            id="title"
-            label="Title"
-            value={title}
-            setValue={setTitle}
-            type="text"
-          />
-
-          <TextArea
-            id="descricao"
-            label="Description"
-            rows={4}
-            value={description}
-            setValue={setDescription}
-          />
-
+        <div className={styles.formFooter}>
           <button
             type="button"
             className={`${styles.privateBtn} ${isPrivate ? styles.active : ""}`}
@@ -182,19 +186,18 @@ const FolderForm = ({ handleBack, setModal, onUpdate }: FolderFormProps) => {
             {isPrivate ? "Private" : "Public"}
           </button>
 
-          {error && (
-            <div>
-              <span>
+          <div className={styles.footerRight}>
+            {error && (
+              <span className={styles.errorText}>
                 <i className="fa-solid fa-circle-exclamation"></i> {error}
               </span>
-            </div>
-          )}
-
-          <SubmitButton
-            type="submit"
-            disabled={loading}
-            text={loading ? "Submitting..." : "Submit"}
-          />
+            )}
+            <SubmitButton
+              type="submit"
+              disabled={loading}
+              text={loading ? "Submitting..." : "Submit"}
+            />
+          </div>
         </div>
 
         <input

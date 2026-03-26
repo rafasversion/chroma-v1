@@ -2,7 +2,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Feed from "./pages/Feed/Feed";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Stats from "./pages/Stats";
 import Header from "./components/Header/Header";
 import Post from "./components/Post/Post";
 import Board from "./pages/Board/Board";

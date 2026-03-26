@@ -118,79 +118,82 @@ const PostForm = ({ handleBack, setModal, onUpdate }: PostFormProps) => {
         <i className="fa-solid fa-arrow-left"></i>
       </button>
       <form className={styles.formModal} onSubmit={handleSubmit}>
-        <div
-          className={`${styles.imageSection} ${dragActive ? styles.dragActive : ""}`}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-        >
-          {!file && (
-            <label htmlFor="postPhoto" className={styles.fileLabel}>
-              <Upload size={28} />
-              <span>
-                Drag & drop or <u>browse</u>
-              </span>
-              <small>Images and videos supported</small>
-            </label>
-          )}
+        <div className={styles.postFormBody}>
+          <div
+            className={`${styles.postImageSection} ${dragActive ? styles.dragActive : ""}`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            {!file && (
+              <label htmlFor="postPhoto" className={styles.fileLabel}>
+                <Upload size={28} />
+                <span>
+                  Drag & drop or <u>browse</u>
+                </span>
+                <small>Images and videos supported</small>
+              </label>
+            )}
 
-          {file && (
-            <div className={styles.previewContainer}>
-              <button
-                type="button"
-                onClick={() => setFile(null)}
-                className={styles.removeBtn}
-              >
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-              {file.type.startsWith("video/") ? (
-                <video
-                  src={file.preview}
-                  className={styles.previewImg}
-                  controls
-                />
-              ) : (
-                <img
-                  src={file.preview}
-                  alt="Preview"
-                  className={styles.previewImg}
-                />
+            {file && (
+              <div className={styles.previewContainer}>
+                <button
+                  type="button"
+                  onClick={() => setFile(null)}
+                  className={styles.removeBtn}
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+                {file.type.startsWith("video/") ? (
+                  <video
+                    src={file.preview}
+                    className={styles.previewImg}
+                    controls
+                  />
+                ) : (
+                  <img
+                    src={file.preview}
+                    alt="Preview"
+                    className={styles.previewImg}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className={styles.postFieldsSection}>
+            <div className={styles.postFieldsTop}>
+              <Input
+                id="title"
+                label="Title"
+                value={title}
+                setValue={setTitle}
+                type="text"
+              />
+
+              <TextArea
+                id="descricao"
+                label="Description"
+                rows={6}
+                value={description}
+                setValue={setDescription}
+              />
+            </div>
+
+            <div className={styles.postFieldsBottom}>
+              {error && (
+                <span className={styles.errorText}>
+                  <i className="fa-solid fa-circle-exclamation"></i> {error}
+                </span>
               )}
+              <SubmitButton
+                type="submit"
+                disabled={loading}
+                text={loading ? "Submitting..." : "Submit"}
+              />
             </div>
-          )}
-        </div>
-
-        <div className={styles.fieldsSection}>
-          <Input
-            id="title"
-            label="Title"
-            value={title}
-            setValue={setTitle}
-            type="text"
-          />
-
-          <TextArea
-            id="descricao"
-            label="Description"
-            rows={4}
-            value={description}
-            setValue={setDescription}
-          />
-
-          {error && (
-            <div>
-              <span>
-                <i className="fa-solid fa-circle-exclamation"></i> {error}
-              </span>
-            </div>
-          )}
-
-          <SubmitButton
-            type="submit"
-            disabled={loading}
-            text={loading ? "Submitting..." : "Submit"}
-          />
+          </div>
         </div>
 
         <input

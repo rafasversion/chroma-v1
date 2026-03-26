@@ -4,7 +4,7 @@ import photoUserDefault from "../../assets/user.svg";
 import SubmitButton from "../Form/Button/SubmitButton";
 import Input from "../Form/Input/Input";
 
-const API_BASE = "https://darkslategrey-quetzal-544290.hostingersite.com";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 interface UserData {
   username?: string;
